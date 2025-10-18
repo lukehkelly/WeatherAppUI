@@ -6,7 +6,6 @@
 //
 
 import SwiftUI
-import Charts
 
 struct ContentView: View {
     var body: some View {
@@ -17,6 +16,7 @@ struct ContentView: View {
                 Text("Beech Mountain")
                     .font(.largeTitle)
                     .foregroundStyle(.white)
+                    .padding(.top)
                 
                 Text("58°")
                     .foregroundStyle(.white)
@@ -56,7 +56,32 @@ struct ContentView: View {
                         }
                     }
                 }
-                DayDisplay(day: "Sat", low: 44, high: 69, icon: "sun.max.fill")
+                
+                ZStack {
+                    RoundedRectangle(cornerRadius: 15, style: .continuous)
+                        .fill((LinearGradient(gradient: Gradient(colors: [Color("bottomTopGradient"), Color("bottomBottomGradient"), ]), startPoint: .top, endPoint: .bottom)))
+                        .padding(.leading, 12)
+                        .padding(.trailing, 12)
+                    VStack {
+                        HStack {
+                            Image(systemName: "calendar")
+                                .foregroundColor(Color(red: 0.89, green: 0.89, blue: 0.89))
+                                .fontWeight(.medium)
+                            Text("10-DAY FORECAST")
+                                .foregroundColor(Color(red: 0.85, green: 0.85, blue: 0.85))
+                                .fontWeight(.medium)
+                        }
+                        .padding(.trailing, 173)
+                        .padding(.bottom, 10)
+                        DayDisplay(day: "Today", low: 44, high: 69, icon: "sun.max.fill")
+                        DayDisplay(day: "Sat", low: 43, high: 69, icon: "sun.max.fill")
+                        DayDisplay(day: "Sun", low: 41, high: 63, icon: "sun.max.fill")
+                        DayDisplay(day: "Mon", low: 51, high: 67, icon: "sun.max.fill")
+                        DayDisplay(day: "Tues", low: 58, high: 67, icon: "sun.max.fill")
+                        DayDisplay(day: "Wed", low: 48, high: 68, icon: "sun.max.fill")
+                        DayDisplay(day: "Thurs", low: 40, high: 61, icon: "sun.max.fill")
+                    }
+                }
             }
         }
     }
@@ -97,12 +122,29 @@ struct DayDisplay: View {
     var body: some View {
         HStack {
             Text(day)
+                .foregroundStyle(.white)
+                .fontWeight(.medium)
+                .font(.system(size: 20))
+                .frame(width: 70, alignment: .leading)
             Image(systemName: icon)
                 .foregroundStyle(.yellow)
+                .padding(.trailing)
+                .font(.system(size: 20))
             Text(String(low)+"°")
+                .foregroundStyle(.white)
+                .font(.system(size: 20))
+                .fontWeight(.medium)
+                .padding(.trailing, 8)
+                .frame(width: 55, alignment: .leading)
             TemperatureGraph(high: high, low: low)
             Text(String(high)+"°")
+                .foregroundStyle(.white)
+                .font(.system(size: 20))
+                .fontWeight(.medium)
+                .padding(.leading, 8)
+
         }
+        .padding(.bottom, 10)
     }
 }
 struct TemperatureGraph: View {
@@ -110,6 +152,8 @@ struct TemperatureGraph: View {
     var low: Int
     
     var body: some View {
+       
+        
         ZStack {
             RoundedRectangle(cornerRadius: 5)
                 .frame(width: 100, height: 7)
@@ -117,7 +161,10 @@ struct TemperatureGraph: View {
             RoundedRectangle(cornerRadius: 5)
                 .frame(width: CGFloat(high-low), height: 7)
                 .foregroundStyle(Color("graph_front"))
-                .padding(.leading, CGFloat(high/3))
+            
+                .padding(.leading, CGFloat(low))
+                .padding(.trailing, CGFloat(100-high))
+                
         }
     }
 }
